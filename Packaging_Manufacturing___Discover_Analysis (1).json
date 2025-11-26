@@ -1,0 +1,543 @@
+{
+  "name": "Packaging Manufacturing - Discover Analysis",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "75a80b91-ee01-41a7-989b-2df970a58092",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -20,
+        120
+      ],
+      "id": "4496b439-f332-4b75-8896-f7b214bf8f20",
+      "name": "Webhook",
+      "webhookId": "9f578a42-8a2b-4e2b-ba24-2d35ea661b9d"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "Market Visibility Audit – We analyze your current presence (website, LinkedIn, trade directories) to pinpoint why buyers can’t find you.\nCompetitor Positioning Map – We benchmark you against competitors to identify gaps where you can stand out.\nBuyer Avatar & List Build – We create a verified database of 500–1,000 decision-makers in your ideal industries.\nAI-Powered Outreach Engine – We deploy our ASM-based system to put your company in front of 30–50 buyers every month.\nAuthority Positioning Content – We craft messaging that highlights your unique strengths (quality, speed, innovation) and makes you the obvious choice.\nReal-Time Buyer Engagement – We deliver qualified inquiries straight to your inbox, with buyers already warmed up.\nQuarterly Market Domination Review – Every 90 days, we refine the strategy to ensure you’re not just visible, but top-of-mind in your industry. ",
+        "options": {
+          "systemMessage": "ok i wll do it"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        260,
+        -40
+      ],
+      "id": "cd377668-8863-46c5-934c-38cf5b12d429",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "Market Positioning Blueprint → We position you as the “go-to” packaging partner using AI-driven market research.\nBuyer Flow Guarantee → We deliver 30–50 qualified inquiries per month, every month, like clockwork.\nLead Qualification Engine → AI filters out tire-kickers so your sales team only talks to decision-makers.\nCompetitor Bypass System → Outreach gets you in front of buyers before your competitors even know.\nTrade Show Independence Plan → Replace slow, costly trade shows with a digital pipeline running 24/7.\nPremium Positioning Framework → Stop competing on price by branding you as the premium choice.\nCloser-Only Sales Workflow → We handle prospecting, your team just closes.\nDecision-Maker Database Access → Direct line to verified packaging buyers (emails, LinkedIn, direct dials).\nAI Outreach Execution → We set up, run, and optimize campaigns for you (no tech headaches).\nRevenue Smoothing System → No more feast-and-famine — your pipeline runs predictably.\nFast-Start Campaign Setup → Get live in under 14 days with your first leads flowing.\nOngoing Optimization & Reporting → Weekly updates, pipeline dashboards, and lead-quality scoring.\nPerformance Guarantee → If we don’t deliver, you don’t pay — zero risk.\nScaling Support → Once leads flow, we help you expand into new packaging verticals.\nWhite-Glove Implementation → Entire system built, run, and managed for you (truly DFY).",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        260,
+        340
+      ],
+      "id": "8d7a8747-0673-4180-9100-4e2473dd28a2",
+      "name": "AI Agent1"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        900,
+        -40
+      ],
+      "id": "3b08cf8a-719d-4884-b3cc-1ee06c593486",
+      "name": "Wait",
+      "webhookId": "2aa48c28-eda4-492b-86a3-6241d7f22b26"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Webhook').item.json.body.email }}",
+        "subject": "Regarding packaging manufacture",
+        "emailType": "text",
+        "message": "= {{ $json.output }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1100,
+        -40
+      ],
+      "id": "560a16b0-6d72-408a-bc75-1da86cdd3b69",
+      "name": "Send a message",
+      "webhookId": "ef17768b-71f3-4355-9c8d-02495e762ecc",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "yFLeLINu7Y2K4cT3",
+          "name": "tanu.kapoor@thevacnerai"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "// Add a new field called 'myNewField' to the JSON of the item\n$input.item.json.myNewField = 1;\n\nreturn $input.item;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        660,
+        -40
+      ],
+      "id": "eae5e75a-2acf-4d23-837c-d992d68b45d8",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "Hi! Bharath",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        660,
+        340
+      ],
+      "id": "50134624-9eb2-4a5a-a40e-f12a3db9b55f",
+      "name": "AI Agent2"
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1CcKwT3FVmiJW9bXsoOC6kSBQKK4gBFVrejzq3mZfD1c",
+          "mode": "list",
+          "cachedResultName": "ComapnyCollectionData",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1CcKwT3FVmiJW9bXsoOC6kSBQKK4gBFVrejzq3mZfD1c/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1683792341,
+          "mode": "list",
+          "cachedResultName": "PackagingManufacturer",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1CcKwT3FVmiJW9bXsoOC6kSBQKK4gBFVrejzq3mZfD1c/edit#gid=1683792341"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "companyName": "={{ $('Webhook').item.json.body.companyName }}",
+            "contactName": "={{ $('Webhook').item.json.body.contactName }}",
+            "email": "={{ $('Webhook').item.json.body.email }}",
+            "phone": "={{ $('Webhook').item.json.body.phone }}",
+            "role": "={{ $('Webhook').item.json.body.role }}",
+            "companySize": "={{ $('Webhook').item.json.body.companySize }}",
+            "packagingTypes": "={{ $('Webhook').item.json.body.packagingTypes }}",
+            "specificPainPoint": "={{ $('Webhook').item.json.body.specificPainPoint }}",
+            "productionVolume": "={{ $('Webhook').item.json.body.productionVolume }}",
+            "currentProcesses": "={{ $('Webhook').item.json.body.currentProcesses }}",
+            "painPointDescription": "={{ $('Webhook').item.json.body.painPointDescription }}",
+            "impactOnBusiness": "={{ $('Webhook').item.json.body.impactOnBusiness }}",
+            "howSolvingIt": "={{ $('Webhook').item.json.body.howSolvingIt }}",
+            "revenueGoal": "={{ $('Webhook').item.json.body.revenueGoal }}",
+            "investmentAmount": "={{ $('Webhook').item.json.body.investmentAmount }}",
+            "additionalComments": "={{ $('Webhook').item.json.body.additionalComments }}",
+            "Output": "={{ $('AI Agent1').item.json.output }}",
+            "output": "={{ $json.output }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "companyName",
+              "displayName": "companyName",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "contactName",
+              "displayName": "contactName",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "phone",
+              "displayName": "phone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "role",
+              "displayName": "role",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "companySize",
+              "displayName": "companySize",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "packagingTypes",
+              "displayName": "packagingTypes",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "specificPainPoint",
+              "displayName": "specificPainPoint",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "productionVolume",
+              "displayName": "productionVolume",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "currentProcesses",
+              "displayName": "currentProcesses",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "painPointDescription",
+              "displayName": "painPointDescription",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "impactOnBusiness",
+              "displayName": "impactOnBusiness",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "howSolvingIt",
+              "displayName": "howSolvingIt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "revenueGoal",
+              "displayName": "revenueGoal",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "investmentAmount",
+              "displayName": "investmentAmount",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "additionalComments",
+              "displayName": "additionalComments",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Output",
+              "displayName": "Output",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "output",
+              "displayName": "output",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        1060,
+        340
+      ],
+      "id": "fa6269f8-438a-471c-9610-72f0c019535e",
+      "name": "Google Sheets",
+      "credentials": {
+        "googleApi": {
+          "id": "13iwnniZsaY7VyO3",
+          "name": "PoojaPalService"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        280,
+        140
+      ],
+      "id": "188c14fb-983c-440e-b08d-123def3cae75",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "7RtpdWGgonlHFQIK",
+          "name": "AlwaysUsed"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        240,
+        560
+      ],
+      "id": "f31ddb4f-39f8-4faf-8d31-f57586af0114",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "7RtpdWGgonlHFQIK",
+          "name": "AlwaysUsed"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        700,
+        580
+      ],
+      "id": "3c5fa19e-dd84-447a-81c8-14037d271f18",
+      "name": "OpenAI Chat Model2",
+      "credentials": {
+        "openAiApi": {
+          "id": "7RtpdWGgonlHFQIK",
+          "name": "AlwaysUsed"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent1": {
+      "main": [
+        [
+          {
+            "node": "AI Agent2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent2": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent2",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "76f0595f-484d-414a-b4d9-ab1e36b8d405",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "4d949202a47676d698bdba96f7bba429e957dcc21ec266fbc40ef128cf210368"
+  },
+  "id": "kLOYJql7w8fxLuVG",
+  "tags": [
+    {
+      "createdAt": "2025-10-04T07:16:27.583Z",
+      "updatedAt": "2025-10-04T07:16:27.583Z",
+      "id": "JR2kgHN0DTKWguLA",
+      "name": "Don'tTouch-implemented"
+    }
+  ]
+}
