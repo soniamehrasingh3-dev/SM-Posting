@@ -1,0 +1,267 @@
+{
+  "name": "CASE-STUDY WORKFLOW",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "case_study",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        240,
+        -200
+      ],
+      "id": "cf20dfe8-6229-4794-b203-5c32af7940fd",
+      "name": "Webhook",
+      "webhookId": "58f1d730-2469-4d8c-bbf0-ef482ec2341c"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        480,
+        40
+      ],
+      "id": "d813aa2c-d938-40e9-98b3-226c38d5a059",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "7RtpdWGgonlHFQIK",
+          "name": "AlwaysUsed"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.pdf.co/v1/pdf/convert/from/html",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "x-api-key",
+              "value": "=zeba.ecowoodies@gmail.com_Mr0rD9Rb9B6KzABiigHjrSGdzUOYCMI1bQ6qeAnx7UB4rh4RjATyLFjh6UCbg3AF"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "=html",
+              "value": "={{ $json.output }}"
+            },
+            {
+              "name": "name",
+              "value": "case study.pdf"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        840,
+        -200
+      ],
+      "id": "7b92774a-baf4-4ae5-9f01-7154f4d7ba1c",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.url }}",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "output",
+              "value": "data"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1040,
+        -200
+      ],
+      "id": "e157bb37-50a9-41da-96bf-dcb2826ff70b",
+      "name": "HTTP Request1"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are an expert B2B marketing copywriter who creates persuasive case studies for any industry using AI agents for lead generation.\n\nUse the following structure and tone to generate a detailed, realistic case study.  \nIt should sound professional, data-backed, and results-oriented — like a LinkedIn or SaaS success story (similar in tone to HubSpot, Apollo, or Lemlist case studies).\n\nCRITICAL INSTRUCTIONS:\n- Return ONLY valid HTML code (no markdown, no code blocks, no explanations)\n- Start with <!DOCTYPE html> and end with </html>\n- Include all CSS inline within <style> tags\n- Do NOT include any logo section or placeholder images\n- Follow the exact structure and color scheme specified below\n-align the content as per pages, the content should not be breaked to another page\n\n\n\nDESIGN SPECIFICATIONS:\n- Primary Blue: #1e40af (dark blue)\n- Secondary Blue: #3b82f6 (light blue) \n- Accent Blue: #2563eb (medium blue)\n- Light Blue Background: #dbeafe\n- Accent Yellow: #fbbf24 (for CTA button)\n- Background: #ffffff (white)\n- Alt Background: #f8fafc (very light gray)\n- Text: #1e293b (dark gray)\n- Secondary Text: #475569 (medium gray)\n\n- Font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif\n- H1: 32px bold, Navy blue color text \n- H2: 26px bold, #1e40af color, bottom border #3b82f6\n- H3: 20px bold, #2563eb color\n- Body: 15px, line-height 1.7, #475569 color\n- Max width: 900px, centered\n- Section spacing: 40px between sections\n\n\nSTRUCTURE TO FOLLOW:\n\n1. HEADER SECTION (no logo):\n   - Case study title (H1) - ## Case Study: How a [Industry/Exporter Type] Generated [X Qualified Buyer Inquiries or Y% ROI] in [Z Days] — Without Running Ads\n   - Display meta information VERTICALLY (one item per line, NOT in a grid, grey background, input name should be bold black)\nIndustry : {{ $json.body.industry }}\nCompany : {{ $json.body.companyName }}\nFramework : {{ $json.body.frameworkUsed }}\nDuration : {{ $json.body.campaignDuration }}\nInvestment : {{ $json.body.initialInvestment }}\nKey Challenge : {{ $json.body.keyChallenge }}\nROI : {{ $json.body.keyResults }}\nLocation : {{ $json.body.location }}\nProduct Service Focus : {{ $json.body.productServiceFocus }}\n\n\n\n2. THE SITUATION:\n   - Company background\n   - Bullet list of previous channels used\n   - Pain point summary (start with any emoji) with the text dark and bold golden yellow color, background grey color)\n\n3. THE TASK (Alt background section):\n   - 3 main goals as bullet list\n   - Framework introduction\n\n4. THE ACTION:\n   - Step 1 — ATTRACT (with 📊 icon)\n     - Details in bullet list\n     - Outcome box (light blue background with ➡️)\n   \n   - Step 2 — SELL (with 💼 icon)\n     - Details in bullet list  \n     - Outcome box\n   \n   - Step 3 — MONETIZE (with 💰 icon)\n     - Details in bullet list\n     - Result box\n\n5. THE RESULTS (Alt background section):\n   - Table with blue header showing Before/After metrics\n   - Client quote in styled quote box\n\n6. WHY IT WORKED:\n   - Checkmark list (✅) with 4 key points\n\n7. KEY TAKEAWAYS:\n   - 3 bullet points\n\n8. YOUR TURN (CTA section with white gradient):\n   - Personalized industry message\n   - Yellow CTA button: \"Book a Free 15-Minute Strategy Session\"\n\nTABLE STYLING:\n- Blue gradient header (#1e40af to #2563eb)\n- White text in header\n- Alternating row colors (#f8fafc)\n- Border radius and shadow for depth\n\nUse emojis for section headings:  📊,✅,💼\n\nNow generate the complete HTML case study using these exact specifications and the data provided by the user.",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        480,
+        -200
+      ],
+      "id": "27ae6034-8753-43b9-95a7-82b8324ee8b5",
+      "name": "Case Study Generator"
+    },
+    {
+      "parameters": {
+        "sendTo": "keerthanawork20@gmail.com",
+        "subject": "Hi, case study",
+        "message": "no",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1060,
+        -720
+      ],
+      "id": "fef28532-4f95-4eb0-a0ce-751a12701e59",
+      "name": "Send a message",
+      "webhookId": "a393096e-3f66-4dcf-a480-d30d287058c8",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "yFLeLINu7Y2K4cT3",
+          "name": "tanu.kapoor@thevacnerai"
+        }
+      },
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "driveId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "My Drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "root",
+          "cachedResultName": "/ (Root folder)"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        1260,
+        -200
+      ],
+      "id": "78934d8d-04fb-4740-afac-7b1547034ea1",
+      "name": "Google Drive",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "u4Va1KDL84H4lb8y",
+          "name": "sonia"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "{\n  \"company_name\": \"Ecowoodies\",\n  \"industry\": \"Furniture Export and Manufacturing\",\n  \"product_service\": \"Eco-friendly wooden furniture exports such as dining sets, chairs, home décor, and customized interior pieces made from sustainable materials.\",\n  \"target_buyer_titles\": \"Procurement Manager, Furniture Importer, Retail Chain Buyer, Interior Project Head\",\n  \"target_industries\": \"Home Décor, Furniture Retail, Hospitality, Interior Design, Corporate Procurement\",\n  \"unique_advantages\": \"Sustainably sourced wood, handcrafted designs, competitive export pricing, and end-to-end global logistics support.\",\n  \"monthly_enquiry_goal\": \"100\",\n  \"geographic_markets\": \"Europe, Middle East, and North America\",\n  \"current_challenges\": \"Inconsistent lead generation, dependence on trade shows, and lack of digital buyer acquisition systems.\",\n  \"certifications\": \"FSC Certified Wood, ISO 9001 Quality Management, SEDEX Compliance\",\n  \"typical_deal_value\": \"$5,000–$15,000 per shipment\",\n  \"sender_name\": \"Keerthana\",\n  \"sender_title\": \"AI Marketing Specialist\",\n  \"pain_points\": \"Difficulty in reaching international buyers, long sales cycles, and manual enquiry handling process.\",\n  \"unique_value_props\": \"We help global importers access premium, eco-friendly wooden furniture with guaranteed quality, fast shipping, and transparent communication.\",\n  \"case_study_results\": \"Helped Ecowoodies generate 120+ qualified leads and double export orders within 45 days using AI-powered enquiry automation.\",\n  \"First_name\": \"Ravi\",\n  \"target_buyer_titles_singular\": \"Furniture Importer\"\n}"
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        100,
+        -540
+      ],
+      "typeVersion": 1,
+      "id": "c3d535cc-d680-4512-b477-7ba414d418ce",
+      "name": "Sticky Note"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Case Study Generator",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Case Study Generator",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "Google Drive",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Case Study Generator": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "f0880603-004b-4853-b7e5-2d7f72aae129",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "4d949202a47676d698bdba96f7bba429e957dcc21ec266fbc40ef128cf210368"
+  },
+  "id": "NyOxS0KJRHMs41VX",
+  "tags": [
+    {
+      "createdAt": "2025-10-04T07:16:27.583Z",
+      "updatedAt": "2025-10-04T07:16:27.583Z",
+      "id": "JR2kgHN0DTKWguLA",
+      "name": "Don'tTouch-implemented"
+    }
+  ]
+}

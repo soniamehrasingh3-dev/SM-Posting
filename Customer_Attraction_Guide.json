@@ -1,0 +1,260 @@
+{
+  "name": "Customer Attraction Guide",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "Guide",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        200,
+        -360
+      ],
+      "id": "e1fb57da-06ff-4100-b47f-02d8d3021714",
+      "name": "Webhook",
+      "webhookId": "120c6582-10c3-4338-bc64-3a57da031fb4"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        440,
+        -140
+      ],
+      "id": "74fd59e7-53f4-4a53-bc72-058acb69258c",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "7RtpdWGgonlHFQIK",
+          "name": "AlwaysUsed"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.pdf.co/v1/pdf/convert/from/html",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "x-api-key",
+              "value": "=zeba.ecowoodies@gmail.com_Mr0rD9Rb9B6KzABiigHjrSGdzUOYCMI1bQ6qeAnx7UB4rh4RjATyLFjh6UCbg3AF"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "=html",
+              "value": "={{ $json.output }}"
+            },
+            {
+              "name": "name",
+              "value": "guide.pdf"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        800,
+        -360
+      ],
+      "id": "03129be0-d8f7-4808-a22c-f3a953883fe4",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.url }}",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "output",
+              "value": "data"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1000,
+        -360
+      ],
+      "id": "60d7996b-24a9-4afd-bb96-bcf7a4e9fbe8",
+      "name": "HTTP Request1"
+    },
+    {
+      "parameters": {
+        "sendTo": "keerthanawork20@gmail.com",
+        "subject": "Hi, case study",
+        "message": "no",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        840,
+        -760
+      ],
+      "id": "dbd56787-4c53-4c8c-bc0a-76e0de00d824",
+      "name": "Send a message",
+      "webhookId": "e1a6b39f-055c-4e56-a691-a37cfe804acf",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=# PROFESSIONAL CUSTOMER ATTRACTION GUIDE GENERATOR\n\n## YOUR ROLE\nYou are an elite business strategist and marketing consultant who creates visually stunning, professional, and highly actionable customer attraction guides for any business type.\n\n## INPUT VARIABLES\nExtract these from user input:\n1. Business Type/Industry: {{ $json.body.business_type }}\n2. Business Model: {{ $json.body.business_model }}\n3. Target Market: {{ $json.body.target_market }}\n4. Business Stage: {{ $json.body.business_stage }}\n\n## CRITICAL REQUIREMENTS\n- Generate EXACTLY 10 PAGES (no more, no less)\n- NO separate cover page - start directly with content\n- NO markdown code blocks or html tags in output\n- Use modern, attractive color schemes\n- Include visual elements (tables, boxes, gradients)\n- Professional yet eye-catching design\n- Every page must be content-rich\n\n---\n\n## COMPLETE HTML STRUCTURE\n\nGenerate one complete HTML document with this EXACT structure:\n\n\n### CSS STYLING (Must be modern and attractive)\n\n**Universal Color Palette (Same for ALL Industries):**\n- Primary Color: #1e3a5f (Deep Navy Blue)\n- Secondary Color: #2e5984 (Medium Blue)\n- Accent Color: #4a90e2 (Sky Blue)\n- Background: #f8f9fa (Off White)\n- Text Color: #2d3748 (Dark Gray)\n- Border Color: #e2e8f0 (Light Gray)\n- Table Header: #1e3a5f (Deep Navy)\n- Success/Highlight: #4a90e2 (Sky Blue)\n- Warning: #f6993f (Soft Orange)\n\n**Typography:**\n- Font: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif\n- Header title: 28px, bold, primary color (#1e3a5f)\n- h2: 24px, bold, primary color, with thin bottom border\n- h3: 20px, semi-bold, secondary color (#2e5984)\n- h4: 18px, semi-bold, text color\n- Body: 15px, line-height 1.7, text color (#2d3748)\n- Strong/Bold: Semi-bold weight for emphasis\n\n**Component Styling:**\n- executive-summary: White background, thin left border (3px #4a90e2), 20px padding, subtle shadow\n- strategy-box: White background, thin left border (3px #2e5984), 18px padding, clean lines\n- tip-box: Light background (#f0f9ff), thin left border (3px #4a90e2), minimal padding\n- warning-box: Light background (#fff7ed), thin left border (3px #f6993f), minimal padding\n- industry-stat: Clean white card with colored top border, centered text, subtle shadow\n- Tables: Simple design with navy header (#1e3a5f), white text, alternating rows (#f8f9fa/#ffffff), thin borders\n- Checklists: Simple blue checkmarks (#4a90e2), clean spacing, no backgrounds\n- Section headers: Simple bottom border (1px), minimal decoration\n- Overall: Clean, minimal, lots of white space, professional and decent\n\n**Page Layout:**\n- Each page: White background, 60px padding, box-shadow, margin-bottom 20px\n- Page container: max-width 210mm (A4), centered\n- Body background: #f5f5f5\n- Min-height per page: 297mm\n\n---\n\n## 10-PAGE STRUCTURE (EXACT)\n\n### PAGE 1: EXECUTIVE SUMMARY & MARKET ANALYSIS\n```\nHEADER SECTION (Clean, professional, minimal):\n- CUSTOMER ATTRACTION GUIDE - 32px, #1e3a5f (navy), bold, CENTERED\n- [Business Type] - 20px, #1e3a5f (navy), bold, CENTERED, UPPERCASE, margin-top 10px\n- Simple thin bottom border: 1px solid #e2e8f0, full width, margin-top 15px\n- Meta line: Business Model & Target Market — 14px, #6b7280, centered, margin-top 20px, margin-bottom 30px\n\nEXECUTIVE SUMMARY BOX:\n- Clean white card with NO left border\n- Subtle box shadow for depth (same as other content boxes)\n- \"Executive Summary\" heading (24px, bold, #1e3a5f)\n- Purpose paragraph (2-3 sentences, clean formatting)\n- \"Expected Outcomes\" subheading (20px, semi-bold, #2e5984)\n- Expected Outcomes (5-6 bullet points with specific metrics)\n- Implementation Timeline section (simple text, no badge)\n- NO Investment Required section (REMOVED)\n- Style should match strategy-box but WITHOUT the left border\n\nTARGET MARKET ANALYSIS:\n- \"Understanding Your Target Market\" heading\n- Customer Segments Table (clean design)\n  Columns: Segment | Demographics | Primary Needs | How They Find You\n  Simple navy header, alternating rows, no fancy styling\n- Key Decision Factors (simple bulleted list)\n```\n### PAGE 2: DIGITAL PRESENCE FOUNDATION\n```\nSECTION 1: Professional Website Essentials\n- Introduction paragraph\n- Critical Elements Checklist (12-15 items with descriptions)\n  Use checkmark list format\n- SEO Strategy Box\n  * Target keywords (8-10 specific examples)\n  * Technical SEO requirements\n  * Content optimization tips\n\nSECTION 2: Social Media Strategy\n- Platform Recommendations Table\n  Columns: Platform | Best For | Content Types | Post Frequency\n- Content Mix breakdown (percentages with descriptions)\n- Engagement tactics\n```\n\n### PAGE 3: AI-POWERED AUTOMATION\n```\nSECTION 1: Smart Lead Generation\n- AI Prospecting Tools (table format)\n  Columns: Tool Name | Purpose | Cost | Key Features\n- Automation workflows description\n- Integration recommendations\n\nSECTION 2: AI Content Creation\n- Content automation strategies\n- AI tools for different content types (table)\n- Scaling tactics\n\nSECTION 3: Chatbots & Conversational AI\n- Implementation strategy\n- Common queries to automate (list)\n- Recommended platforms with pricing\n```\n\n### PAGE 4: SALES & OUTREACH STRATEGIES\n```\nSECTION 1: Email Marketing Framework\n- Subject Lines That Convert (8-10 examples)\n- Email Structure Template (boxed format)\n- Sequence Strategy (visual flow)\n- Tools & Platforms (table with costs)\n\nSECTION 2: Direct Outreach Tactics\n- Cold Calling Script (if B2B) OR Customer Engagement (if B2C)\n  Formatted as actual script with sections\n- Objection Handling Table\n  Columns: Objection | Response Strategy\n- Follow-up Sequence (timeline format)\n```\n\n### PAGE 5: VIDEO & VIRTUAL MARKETING\n```\nSECTION 1: Video Content Strategy\n- Video Types for Industry (detailed list with descriptions)\n- Content Calendar Template\n- Production Tips & Tools\n\nSECTION 2: Virtual Demonstrations & Events\n- Virtual event types\n- Platform recommendations (table)\n- Engagement techniques\n- Live streaming strategy\n\nSECTION 3: Emerging Technologies\n- AR/VR opportunities\n- Interactive content ideas\n- Technology investment priorities\n```\n\n### PAGE 6: STRATEGIC PARTNERSHIPS\n```\nSECTION 1: Partnership Opportunities\n- Complementary Businesses (detailed list with partnership models)\n- Partnership Value Proposition\n- Outreach Strategy\n\nSECTION 2: Affiliate & Reseller Programs\n- Program Structure (tiered breakdown)\n- Commission/Incentive Table\n- Marketing Support Package\n\nSECTION 3: Industry Networks\n- Associations & Communities (list with benefits)\n- Networking Strategy\n- Speaking & Thought Leadership Opportunities\n```\n\n### PAGE 7: COMMUNITY & CONTENT MARKETING\n```\nSECTION 1: Community Engagement\n- Local/Online Community Strategies (based on business type)\n- Event Ideas (8-10 specific concepts)\n- Partnership Opportunities\n\nSECTION 2: Content Marketing Strategy\n- High-Value Content Topics (10-12 ideas with descriptions)\n- Content Distribution Channels\n- Content Calendar Framework\n\nSECTION 3: User-Generated Content & Influencer Marketing\n- UGC Campaign Ideas\n- Influencer Collaboration Framework\n- Measurement & Amplification\n```\n\n### PAGE 8: RETENTION & LOYALTY\n```\nSECTION 1: Referral Program Design\n- Program Structure (tiered with incentives)\n- Implementation Steps\n- Promotion Strategy\n- Tracking & Measurement\n\nSECTION 2: Customer Retention Strategies\n- Retention Tactics (8-10 detailed strategies)\n- Customer Journey Touchpoints\n- Win-Back Campaigns\n\nSECTION 3: VIP & Loyalty Programs\n- Program Tiers Design\n- Benefits & Rewards Structure\n- Technology Requirements\n```\n\n### PAGE 9: METRICS & BUDGET\n```\nSECTION 1: Key Performance Indicators\n- Marketing Metrics Table (10-12 KPIs)\n  Columns: Metric | Target | How to Track | Industry Benchmark\n- Dashboard Recommendations\n\nSECTION 2: Budget Allocation\n- Monthly Budget Breakdown Table ($3,000-5,000 example)\n  Columns: Category | Budget | Activities | Expected ROI\n- Scaling Strategy\n\nSECTION 3: Competitive Positioning\n- Pricing Strategies Table\n  Columns: Strategy | When to Use | Pros | Cons\n- Differentiation Methods (detailed list)\n```\n\n### PAGE 10: IMPLEMENTATION & RESOURCES\n```\nSECTION 1: 90-Day Action Plan\nMONTH 1 - FOUNDATION:\n- Week 1-2 Tasks (checklist format, 6-8 items)\n- Week 3-4 Tasks (checklist format, 6-8 items)\n\nMONTH 2 - EXECUTION:\n- Week 5-6 Tasks (checklist format, 6-8 items)\n- Week 7-8 Tasks (checklist format, 6-8 items)\n\nMONTH 3 - SCALE & OPTIMIZE:\n- Week 9-10 Tasks (checklist format, 6-8 items)\n- Week 11-12 Tasks (checklist format, 6-8 items)\n\nSECTION 2: Essential Tools & Software\n- Comprehensive Tools Table (15-20 tools)\n  Columns: Tool Category | Recommended Options | Cost | Purpose\n\nSECTION 3: Common Mistakes to Avoid\n- Marketing Mistakes (warning box, 6-8 items)\n- Operational Mistakes (warning box, 6-8 items)\n\nSECTION 4: Success Checklist\n- Prerequisites checklist (15-20 items)\n\nFOOTER:\n- Professional footer with title, copyright, inspirational quote\n```\n\n---\n\n## CONTENT QUALITY STANDARDS\n\n### Industry Customization Rules:\n1. **Every example must be industry-specific** - NO generic placeholders\n2. **Use industry terminology** correctly and naturally\n3. **Reference industry-specific tools** - NOT generic ones\n4. **Include compliance/regulations** if relevant (HIPAA for healthcare, FDA for food, etc.)\n5. **Statistics must be current** - cite realistic 2024-2025 data\n6. **Pricing must be realistic** for the industry and business size\n\n### Business Model Adaptations:\n\n**B2C Businesses:**\n- Emotional storytelling and brand personality\n- Instagram, TikTok, Facebook focus\n- Influencer and UGC strategies\n- Customer loyalty and experience programs\n- Local SEO and Google My Business (if local)\n- Short sales cycles (hours to weeks)\n- Online reviews and ratings emphasis\n- Impulse and emotional triggers\n\n**B2B Businesses:**\n- LinkedIn and professional networking\n- Thought leadership and expertise\n- White papers, case studies, webinars\n- Account-based marketing\n- Sales process and CRM systems\n- Longer sales cycles (months)\n- ROI and value proposition focus\n- Referral and partnership programs\n\n**Local Businesses (B2C or B2B):**\n- Google My Business optimization (critical)\n- Local SEO and directory listings\n- Community events and partnerships\n- Local influencer collaborations\n- Geotargeted advertising\n- Neighborhood marketing\n- Local PR and media\n\n**E-commerce/Online:**\n- Conversion rate optimization\n- Abandoned cart strategies\n- Product photography and descriptions\n- Paid ads (Google Shopping, Facebook/Instagram)\n- Email automation and sequences\n- Retargeting campaigns\n- Marketplace strategies (Amazon, Etsy, etc.)\n\n### Actionability Requirements:\n1. **Specific tools** - Name actual software with pricing\n2. **Templates** - Provide actual script/email templates\n3. **Checklists** - Step-by-step implementation lists\n4. **Timelines** - Realistic timeframes for each strategy\n5. **Metrics** - Specific numbers and benchmarks\n6. **Examples** - Real-world scenarios for the industry\n\n### Visual Excellence Standards:\n1. **Tables** - Minimum 8-10 tables throughout the guide\n2. **Boxes** - Use all box types (executive-summary, strategy-box, tip-box, warning-box)\n3. **Checklists** - At least 5-6 checklist sections\n4. **Statistics Boxes** - 2-3 eye-catching stat boxes with gradients\n5. **Color Consistency** - Use industry color palette throughout\n6. **White Space** - Proper spacing, not cramped\n7. **Professional Typography** - Consistent hierarchy\n\n---\n\n## OUTPUT FORMAT\n\nGenerate ONE complete HTML document with:\n\n1. Complete DOCTYPE and HTML structure\n2. Full CSS in <style> tags (500+ lines of beautiful CSS)\n3. All 10 pages in sequence within <body>\n4. NO markdown code fences\n5. NO truncation or \"continued\" sections\n6. Every section fully written out\n7. All tables, checklists, and boxes properly formatted\n\n---\n\n## QUALITY CHECKLIST\n\nBefore generating, ensure:\n- [ ] Exactly 10 pages, properly structured\n- [ ] NO separate cover page\n- [ ] Industry-specific throughout (zero generic content)\n- [ ] 3-5 industry statistics with impressive numbers\n- [ ] 15-20 specific tool recommendations with real pricing\n- [ ] 8-10 comprehensive tables\n- [ ] 90-day action plan with weekly tasks\n- [ ] All strategies are actionable with clear steps\n- [ ] Modern, AI-driven approaches emphasized\n- [ ] Beautiful, professional styling with proper colors\n- [ ] All CSS components used properly\n- [ ] Footer included on last page\n- [ ] NO markdown tags in output\n\n---\n\n## EXAMPLE OUTPUT EXPECTATIONS\n\n**Input:** \"Yoga Studio\"\n\n**Must Include:**\n- Wellness purple/green color scheme (#6A1B9A)\n- Instagram/TikTok content strategies with specific post ideas\n- Class package pricing models (table)\n- Mindbody/Glofox software recommendations\n- Local partnership ideas (coffee shops, wellness centers, corporate offices)\n- Challenge campaign frameworks (30-day yoga challenge)\n- Retail product opportunities (mats, apparel, supplements)\n- Community building through events\n- Teacher training as revenue stream\n- Virtual class monetization\n- Statistics about yoga industry growth\n- Seasonal marketing calendar\n- Member retention tactics specific to studios\n\n**Input:** \"B2B SaaS CRM Software\"\n\n**Must Include:**\n- Tech blue color scheme (#1A5490)\n- LinkedIn outreach automation strategies\n- Free trial to paid conversion tactics\n- Product-led growth framework\n- Integration partnership opportunities (Zapier, Salesforce, etc.)\n- Demo video best practices\n- Webinar topics for lead generation\n- Case study creation framework\n- Pricing page optimization\n- Sales process for high-ticket SaaS\n- Churn reduction strategies\n- Usage-based pricing models\n- Statistics about SaaS market growth\n- Onboarding excellence tactics\n\n---\n\n## FINAL INSTRUCTION\n\nGenerate the COMPLETE HTML guide immediately. Do NOT summarize, truncate, or use placeholders. Write every single section in full detail with all tables, lists, and content. The output should be 10,000-15,000 words of pure, actionable content in beautiful HTML format.",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        440,
+        -360
+      ],
+      "id": "adfac045-b9b0-4265-996a-7a85ae10a260",
+      "name": "Guide Generator"
+    },
+    {
+      "parameters": {
+        "driveId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "My Drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "root",
+          "cachedResultName": "/ (Root folder)"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        1220,
+        -360
+      ],
+      "id": "e90cbcd9-375a-405c-b0a3-d4491d779855",
+      "name": "Google Drive",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "u4Va1KDL84H4lb8y",
+          "name": "sonia"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "{\n  \"business_type\": \"Furniture Export and Manufacturing\",\n  \"business_model\": \"B2B\",\n  \"target_market\": \"Furniture importers, distributors, and retail brands in Europe, the Middle East, and North America looking for sustainable and premium-quality wooden furniture.\",\n  \"business_stage\": \"Growing\"\n}"
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        240,
+        -660
+      ],
+      "typeVersion": 1,
+      "id": "dfeb13b5-a482-43a1-9104-2e0a1e705ce0",
+      "name": "Sticky Note"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Guide Generator",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Guide Generator",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "Google Drive",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Guide Generator": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "c5768096-7d71-4015-96ab-6686c6ce66ff",
+  "meta": {
+    "instanceId": "4d949202a47676d698bdba96f7bba429e957dcc21ec266fbc40ef128cf210368"
+  },
+  "id": "PXWX4ut0QytkUqMw",
+  "tags": [
+    {
+      "createdAt": "2025-10-04T07:16:27.583Z",
+      "updatedAt": "2025-10-04T07:16:27.583Z",
+      "id": "JR2kgHN0DTKWguLA",
+      "name": "Don'tTouch-implemented"
+    }
+  ]
+}

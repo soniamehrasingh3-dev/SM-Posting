@@ -1,0 +1,311 @@
+{
+  "name": "AI Success story",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "3b5d4a7b-8f59-4018-8efb-a27fab0c973e",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -180,
+        -200
+      ],
+      "id": "a8bdfca9-9996-449e-a0c1-d6a3690f2d52",
+      "name": "Webhook",
+      "webhookId": "3b5d4a7b-8f59-4018-8efb-a27fab0c973e",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are an expert B2B marketing copy-writer AI agent who will create a fully formatted success story HTML file based on the following template.\nUse exactly the field labels and structure described below. Do not change or remove any field names. Only the content (i.e., what is inside each field or paragraph) will change based on the input you receive.\n\nFIELDS (exact labels):\nIndustry : {{ $json.body.Industry }}\nCompany : {{ $json.body['Company Name'] }}\nLocation : {{ $json.body.Location }}\nProduct Focus : {{ $json.body['Product Focus'] }}\nTarget Market : {{ $json.body['Target Market'] }}\nKey Challenge : {{ $json.body['Key Challenge'] }}\nCampaign Duration : {{ $json.body['Campaign Duration'] }}\nInitial Investment: {{ $json.body['Initial Investment'] }}\nKey Results : {{ $json.body['Key Results'] }}\nROI : {{ $json.body.ROI }}\nClient Quote : {{ $json.body['Client Quote'] }}\nClient Name : {{ $json.body.ClientName }}\nClient Title : {{ $json.body['client Title'] }}\n\n\n\nTEMPLATE STRUCTURE (to render in HTML):\n#Follow this html structure:\n<!DOCTYPE html>\n<html>\n<head>\n</head>\n<body>\n</body>\n</html>\n\n\nHEADER SECTION : \n\nTitle (H1): “Success Story: Transforming Brand Visibility for a Leading Packaging Company” (replace with appropriate title based on input)\n\nMeta info block (vertical list, one item per line, input labels bold): display each of the FIELDS above in order.\n\n\nClient Overview\n\nParagraph describing the client (using Company, Industry, Location, Product Service Focus)\n\nParagraph describing the problem and why change was needed (mention Framework as partner).\n\nThe Challenge\n\nParagraph introducing the challenge\n\nBullet list of three key challenges (each beginning with field text)\n\nParagraph summarizing the need.\n\nPathvancer’s Approach (or if your input replaces “Pathvancer”, use Company of agency)\n\nParagraph introducing the approach and audit\n\nHeading (H3) for “1. Strategic Positioning” + description\n\nHeading (H3) for “2. Content & Engagement Engine” + description (bullet list inside)\n\nHeading (H3) for “3. Automated Outreach System” + description.\n\nExecution Timeline\n\nTable with columns: Phase | Duration | Key Activities\n\nRows as per typical phases (Discovery & Audit; Positioning Setup; Campaign Launch; Optimization).\n\nResults: Visibility Turned Into Growth\n\nBullet list of specific results (e.g., 3× increase in engagement; 27 qualified leads; improved brand recognition; reduced manual effort)\n\nParagraph summarizing the impact.\n\nClient Feedback\n\nQuote box with a quote from Head of Business Development (or similar role) of the company.\n\nConclusion\n\nParagraph with summary of success story, and paragraph about agency’s mission (or partner’s mission).\n\nAbout [Agency]\n\nParagraph about the agency (use Framework or agency name) and mission.\n\nDIAGRAM / STYLING SPECIFICATIONS:\nReturn only valid HTML code (no markdown, no explanation).\nStart with <!DOCTYPE html> and end with </html>.\nInclude all CSS inline within <style> tags in the <head>.\nUse the following color scheme, fonts, sizes, etc:\n\nPrimary Blue: #1e40af (dark blue)\n\nSecondary Blue: #3b82f6 (light blue)\n\nAccent Blue: #2563eb (medium blue)\n\nLight Blue Background: #dbeafe\n\nAccent Yellow: #fbbf24\n\nBackground: #ffffff\n\nAlt Background: #f8fafc\n\nText: #1e293b\n\nSecondary Text: #475569\n\nFont: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif\n\nH1: 32px bold, color #1e40af\n\nH2: 26px bold, color #1e40af, bottom border #3b82f6\n\nH3: 20px bold, color #2563eb\n\nBody text: 15px, line-height 1.7, color #475569\n\nContainer max-width: 900px, centered\n\nSection spacing: 40px between each section\n\nWhen you receive the JSON input with all field values and relevant story content (client overview paragraph, challenge bullet points, approach paragraphs, results bullet list, client quote), generate the full HTML file using the above template and styling. Return ONLY valid HTML code no markdown, Do not change the field labels, structure, or styling. Replace placeholders with actual content from input. you should follow the strict structure given below (no markdowns):\nTEMPLATE STRUCTURE (to render in HTML):\n#Follow this html structure:\n<!DOCTYPE html>\n<html>\n<head>\n</head>\n<body>\n</body>\n</html>\n",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        200,
+        0
+      ],
+      "id": "6a8cb9e0-a44f-4edd-90a6-8356e43a8a96",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://api.pdf.co/v1/pdf/convert/from/html\n",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "x-api-key",
+              "value": "bharathchowdhary79@gmail.com_7XOGuKvG76WFSQg0mfrzf8JiNh8yJRUNaUajqLfMHAuAccOdNdr1vQuGvBhuokcU"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "Html",
+              "value": "={{ $json.output }}"
+            },
+            {
+              "name": "Name",
+              "value": "SucessStory.pdf"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        520,
+        0
+      ],
+      "id": "b99643cb-2eff-431c-b2f1-401740c42e62",
+      "name": "HTTP Request",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "0TRprS7POzBr9TaL",
+          "name": "Zeba"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.url }}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        700,
+        0
+      ],
+      "id": "6a3976ae-5a06-49ac-a8c2-00414a0ad592",
+      "name": "HTTP Request1"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        200,
+        220
+      ],
+      "id": "8e0a984f-f34c-4a0b-9b53-7c93dd26bcda",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "7RtpdWGgonlHFQIK",
+          "name": "AlwaysUsed"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "name": "Success Story",
+        "driveId": {
+          "__rl": true,
+          "value": "My Drive",
+          "mode": "list",
+          "cachedResultName": "My Drive",
+          "cachedResultUrl": "https://drive.google.com/drive/my-drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "root",
+          "mode": "list",
+          "cachedResultName": "/ (Root folder)",
+          "cachedResultUrl": "https://drive.google.com/drive"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        880,
+        0
+      ],
+      "id": "d7996a08-c062-43af-868e-c8aba10832e7",
+      "name": "Google Drive",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "u4Va1KDL84H4lb8y",
+          "name": "sonia"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "{\n  \"Industry\": \"Asthetic and Wellness\",\n  \"Company Name\": \"Longativity Aging Solution\",\n  \"Location\": \"South Africa\",\n  \"Product Focus\": \"Anti Aging Bottox\",\n  \"Target Market\": \"Women Enterprenuer\",\n  \"Key Challenge\": \"Limited brand awareness, inefficient manual outreach, lack of strategic digital presence\",\n  \"Framework Used\": \"LinkedIn-Centric Brand Visibility System\",\n  \"Campaign Duration\": \"29 Days\",\n  \"Initial Investment\": \"$300\",\n  \"Key Results\": \"27 qualified leads, 3x engagement increase, 80% reduced manual effort\",\n  \"ROI\": \"12.5X\",\n  \"Client Quote\": \"Pathvancer completely changed how we look at LinkedIn. The engagement, conversations, and qualified leads we've seen in less than two weeks are incredible. It feels like our brand finally has a voice in the market.\",\n  \"ClientName\": \"Head of Business Development\",\n  \"client Title\": \"PackRight Solutions\"\n}"
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -120,
+        160
+      ],
+      "typeVersion": 1,
+      "id": "c48bd939-7d5f-4c2e-bcb8-e70642f01376",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "3b5d4a7b-8f59-4018-8efb-a27fab0c973e",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "0f2a2913-78e6-439f-8ec3-092f7027f4c7",
+      "name": "Webhook1",
+      "webhookId": "3b5d4a7b-8f59-4018-8efb-a27fab0c973e"
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "n8nqa.ecowoodies.com",
+            "x-real-ip": "14.140.185.67",
+            "x-forwarded-for": "14.140.185.67",
+            "x-forwarded-proto": "https",
+            "connection": "upgrade",
+            "content-length": "889",
+            "content-type": "application/json",
+            "authorization": "Bearer 'Bearer 1POdFZRZbvb...qqillRxMr2z'",
+            "user-agent": "PostmanRuntime/7.50.0",
+            "accept": "*/*",
+            "postman-token": "aa3ae3a2-2de5-431f-95bd-48e2808c6dd2",
+            "accept-encoding": "gzip, deflate, br"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "Industry": "Asthetic and Wellness",
+            "Company Name": "Longativity Aging Solution",
+            "Location": "South Africa",
+            "Product Focus": "Anti Aging Bottox",
+            "Target Market": "Women Enterprenuer",
+            "Key Challenge": "Limited brand awareness, inefficient manual outreach, lack of strategic digital presence",
+            "Framework Used": "LinkedIn-Centric Brand Visibility System",
+            "Campaign Duration": "29 Days",
+            "Initial Investment": "$300",
+            "Key Results": "27 qualified leads, 3x engagement increase, 80% reduced manual effort",
+            "ROI": "12.5X",
+            "Client Quote": "Pathvancer completely changed how we look at LinkedIn. The engagement, conversations, and qualified leads we've seen in less than two weeks are incredible. It feels like our brand finally has a voice in the market.",
+            "ClientName": "Head of Business Development",
+            "client Title": "PackRight Solutions"
+          },
+          "webhookUrl": "https://n8nqa.ecowoodies.com/webhook-test/3b5d4a7b-8f59-4018-8efb-a27fab0c973e",
+          "executionMode": "test"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Webhook": {
+      "main": [
+        []
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "Google Drive",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook1": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "107a0b78-9b29-4d9d-af4e-fc0fb810bf21",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "4d949202a47676d698bdba96f7bba429e957dcc21ec266fbc40ef128cf210368"
+  },
+  "id": "TbkRbxKQUROyejza",
+  "tags": [
+    {
+      "createdAt": "2025-10-04T07:16:27.583Z",
+      "updatedAt": "2025-10-04T07:16:27.583Z",
+      "id": "JR2kgHN0DTKWguLA",
+      "name": "Don'tTouch-implemented"
+    }
+  ]
+}
