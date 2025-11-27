@@ -1,0 +1,408 @@
+{
+  "name": "Facebook Ads Scraper with Excel Integration",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {}
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -1168,
+        -368
+      ],
+      "id": "65385675-b210-4d1b-a8db-a9b3ac02bb4b",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1MFdaCwUFn-MUbpxwr7eAGxIKIOsULnrr6sF3oOHUi0Q",
+          "mode": "list",
+          "cachedResultName": "Apify Meta Ads Scrape",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1MFdaCwUFn-MUbpxwr7eAGxIKIOsULnrr6sF3oOHUi0Q/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1MFdaCwUFn-MUbpxwr7eAGxIKIOsULnrr6sF3oOHUi0Q/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -928,
+        -336
+      ],
+      "id": "20119adf-55c1-46fb-8c69-d1c151024c82",
+      "name": "Get row(s) in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "Qt4nYo9k4Ae3lOv1",
+          "name": "Ash's Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "e26531d5-5a52-4a38-8ac1-7a3c78229103",
+      "name": "Loop Over Rows",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -592,
+        -336
+      ],
+      "notes": "Process each country-keyword pair"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "country",
+              "name": "country",
+              "value": "={{ $json.Country_Code }}",
+              "type": "string"
+            },
+            {
+              "id": "keyword",
+              "name": "keyword",
+              "value": "={{ $('Get row(s) in sheet').item.json.Combined_Search_Query }}",
+              "type": "string"
+            },
+            {
+              "id": "search_url",
+              "name": "search_url",
+              "value": "={{ 'https://www.facebook.com/ads/library/?active_status=all&ad_type=all&country=' + $json.Country + '&q=' + encodeURIComponent($json.Combined_Search_Query) }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "e5d8acd4-1720-4a91-a43a-550fbb244026",
+      "name": "Prepare Search Parameters",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.3,
+      "position": [
+        -320,
+        -272
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "Actor tasks",
+        "operation": "Run task and get dataset",
+        "actorTaskId": {
+          "__rl": true,
+          "value": "gvbnVmomBqgmvjHjT",
+          "mode": "list",
+          "cachedResultName": "Facebook Ad Leads (email, phone & more) (Task)",
+          "cachedResultUrl": "https://console.apify.com/actors/tasks/gvbnVmomBqgmvjHjT/input"
+        },
+        "useCustomBody": true,
+        "customBody": "={\n    \"country\": \"{{ $json.country }}\",\n    \"maxItems\": 5,\n    \"proxyConfiguration\": {\n        \"useApifyProxy\": true,\n        \"apifyProxyGroups\": [\n            \"RESIDENTIAL\"\n        ]\n    },\n    \"query\": \"{{ $json.keyword }}\"\n}",
+        "timeout": 120,
+        "build": "latest"
+      },
+      "type": "@apify/n8n-nodes-apify.apify",
+      "typeVersion": 1,
+      "position": [
+        -64,
+        -240
+      ],
+      "id": "39b3676c-3573-41fe-a28f-581eee335619",
+      "name": "Run task and get dataset",
+      "credentials": {
+        "apifyApi": {
+          "id": "NWMow2K5ADAVujkF",
+          "name": "Ash's"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 25
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        528,
+        -80
+      ],
+      "id": "f540ffaf-337c-49fe-af09-f7920a2f7b4d",
+      "name": "Wait",
+      "webhookId": "0da7eea7-842f-434b-9ccb-9a906860e087"
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1MFdaCwUFn-MUbpxwr7eAGxIKIOsULnrr6sF3oOHUi0Q",
+          "mode": "list",
+          "cachedResultName": "Apify Meta Ads Scrape",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1MFdaCwUFn-MUbpxwr7eAGxIKIOsULnrr6sF3oOHUi0Q/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1307380870,
+          "mode": "list",
+          "cachedResultName": "info",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1MFdaCwUFn-MUbpxwr7eAGxIKIOsULnrr6sF3oOHUi0Q/edit#gid=1307380870"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "name",
+              "displayName": "name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "category",
+              "displayName": "category",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "profile_picture",
+              "displayName": "profile_picture",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "website",
+              "displayName": "website",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "facebook",
+              "displayName": "facebook",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "instagram",
+              "displayName": "instagram",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "description",
+              "displayName": "description",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "phone",
+              "displayName": "phone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "address",
+              "displayName": "address",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        176,
+        -192
+      ],
+      "id": "3be347b5-d9d2-41b4-8f81-e34ac651284a",
+      "name": "Append or update row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "Qt4nYo9k4Ae3lOv1",
+          "name": "Ash's Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "##  apify actor link:#https://console.apify.com/actors/1cabRg4HPWqKK38xa/input",
+        "width": 656
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -128,
+        -512
+      ],
+      "id": "1e8e28eb-7af5-4a1a-a265-248b72eb104e",
+      "name": "Sticky Note"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Rows",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Rows": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Prepare Search Parameters",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Search Parameters": {
+      "main": [
+        [
+          {
+            "node": "Run task and get dataset",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Run task and get dataset": {
+      "main": [
+        [
+          {
+            "node": "Append or update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Rows",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append or update row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "3b29e110-c83c-4fd1-b0ca-9df286a1795f",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "830cfd3e55f405be9f095e5edc311ffd3e63ee88070e74e36a64ee2a1a9bb45f"
+  },
+  "id": "Lcq0szHDyel1GHM7",
+  "tags": []
+}
